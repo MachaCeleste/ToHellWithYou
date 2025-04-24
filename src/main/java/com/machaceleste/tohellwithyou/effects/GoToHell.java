@@ -6,7 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class GoToHell extends MobEffect {
     public GoToHell() {
-        super(MobEffectCategory.HARMFUL, 0x5C1111);
+        super(MobEffectCategory.HARMFUL, 0x5C0000);
     }
 
     @Override

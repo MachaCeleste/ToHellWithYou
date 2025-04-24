@@ -1,7 +1,6 @@
 package com.machaceleste.tohellwithyou;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -32,22 +31,24 @@ public class ToHellWithYou {
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.player.level().isClientSide) return;
-
+    
         ServerPlayer player = (ServerPlayer) event.player;
         boolean isInNether = player.level().dimension() == Level.NETHER;
-
+    
         if (isInNether) {
-            player.addEffect(new MobEffectInstance(ModEffects.GO_TO_HELL.get(), 40, 0, true, true));
+            if (!player.hasEffect(ModEffects.GO_TO_HELL.get())) {
+                player.addEffect(new MobEffectInstance(ModEffects.GO_TO_HELL.get(), Integer.MAX_VALUE, 0, true, true));
+            }
+        } else {
+            player.removeEffect(ModEffects.GO_TO_HELL.get());
         }
     }
 
     @SubscribeEvent
     public void onPlayerDeath(LivingDeathEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
-
-        ResourceKey<Level> dimension = player.level().dimension();
-
-        if (dimension != Level.NETHER) {
+    
+        if (!player.hasEffect(ModEffects.GO_TO_HELL.get())) {
             event.setCanceled(true);
             teleportToNether(player);
         }
@@ -56,13 +57,17 @@ public class ToHellWithYou {
     private void teleportToNether(ServerPlayer player) {
         ServerLevel nether = player.server.getLevel(Level.NETHER);
         if (nether == null) return;
-
+    
         BlockPos overworldPos = player.blockPosition();
         BlockPos netherPos = new BlockPos((int)(overworldPos.getX()), overworldPos.getY(), (int)(overworldPos.getZ()));
         BlockPos spawn = findSafeSpawn(nether, netherPos);
-        player.setHealth(3.0F);
+    
+        if (spawn.equals(netherPos)) {
+            spawn = emergencyShelter(nether, netherPos);
+        }
+    
+        player.setHealth(6.0F);
         player.teleportTo(nether, spawn.getX() + 0.5, spawn.getY(), spawn.getZ() + 0.5, player.getYRot(), player.getXRot());
-        player.setHealth(3.0F);
     }
     
     private BlockPos findSafeSpawn(ServerLevel level, BlockPos center) {
@@ -117,5 +122,28 @@ public class ToHellWithYou {
         }
     
         return true;
+    }
+
+    private BlockPos emergencyShelter(ServerLevel level, BlockPos center) {
+        for (int dx = -2; dx <= 2; dx++) {
+            for (int dy = -1; dy <= 3; dy++) {
+                for (int dz = -2; dz <= 2; dz++) {
+                    BlockPos pos = center.offset(dx, dy, dz);
+    
+                    boolean isWall = 
+                        dx == -2 || dx == 2 || 
+                        dy == -1 || dy == 3 || 
+                        dz == -2 || dz == 2;
+    
+                    if (isWall) {
+                        level.setBlockAndUpdate(pos, Blocks.GLASS.defaultBlockState());
+                    } else {
+                        level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+                    }
+                }
+            }
+        }
+    
+        return center.above();
     }
 }
