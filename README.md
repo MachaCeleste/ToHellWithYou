@@ -17,7 +17,7 @@ This mod overhauls Minecraft’s death mechanics to introduce a hardcore-inspire
 ## Why Use This Mod?
 Perfect for players looking for:
 - A fresh twist on Hardcore mode
-- High-stakes gameplay with a built-in “last chance” system  
+- High-stakes gameplay with a built-in “last chance” system
 - More meaningful death mechanics in survival worlds
 
 Whether you're a masochist looking for punishment or a strategist craving high-stakes adventure, *To Hell With You* will change the way you think about death in Minecraft.
