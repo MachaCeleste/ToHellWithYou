@@ -40,7 +40,9 @@ public class ToHellWithYou {
                 player.addEffect(new MobEffectInstance(ModEffects.GO_TO_HELL.get(), Integer.MAX_VALUE, 0, true, true));
             }
         } else {
-            player.removeEffect(ModEffects.GO_TO_HELL.get());
+            if (player.hasEffect(ModEffects.GO_TO_HELL.get())) {
+                player.removeEffect(ModEffects.GO_TO_HELL.get());
+            }
         }
     }
 
