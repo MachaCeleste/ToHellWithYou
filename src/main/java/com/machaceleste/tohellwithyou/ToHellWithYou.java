@@ -4,6 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
@@ -48,12 +50,25 @@ public class ToHellWithYou {
 
     @SubscribeEvent
     public void onPlayerDeath(LivingDeathEvent event) {
-        if (!(event.getEntity() instanceof ServerPlayer player)) return;
-    
-        if (!player.hasEffect(ModEffects.GO_TO_HELL.get())) {
-            event.setCanceled(true);
-            teleportToNether(player);
+        if ((event.getEntity() instanceof ServerPlayer player) &&
+            !player.hasEffect(ModEffects.GO_TO_HELL.get()) &&
+            !hasTotem(player)) {
+                event.setCanceled(true);
+                teleportToNether(player);
+            }
+    }
+
+    public boolean hasTotem(ServerPlayer player) {
+        ItemStack[] items = new ItemStack[] {
+            player.getMainHandItem(),
+            player.getOffhandItem()
+        };
+        for (ItemStack item : items) {
+            if (item.getItem() == Items.TOTEM_OF_UNDYING) {
+                return true;
+            }
         }
+        return false;
     }
 
     private void teleportToNether(ServerPlayer player) {
