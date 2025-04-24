@@ -9,7 +9,7 @@ This mod overhauls Minecraft’s death mechanics to introduce a hardcore-inspire
   If you die in the Overworld, instead of dying outright, you're cast into the fiery depths of the Nether. You’ll keep your items and have one goal: escape.
 
 - **Final Death in the Nether:**
-  Once in the Nether, you're on borrowed time. A special status effect warns you that any further death here is *permanent*. If you die in the Nether, it's game over—items lost.
+  Once in the Nether, you're on borrowed time. A special status effect warns you that any further death here is *permanent*. In other words: if you die in the Nether, it's game over—items lost.
 
 - **Return and Redemption:**
   Survive the Nether and make it back to the Overworld? Congrats—you’ve earned a second chance. Your life continues, but death will once again banish you to hell.
