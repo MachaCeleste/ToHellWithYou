@@ -9,6 +9,6 @@ version="${mod_version}"
 displayName="${mod_name}"
 displayURL="https://github.com/MachaCeleste/ToHellWithYou"
 logoFile="pack.png"
-credits="Art: PequiSoda https://bsky.app/profile/pequisoda.bsky.social"
+credits="PixelArt: PequiSoda https://bsky.app/profile/pequisoda.bsky.social"
 authors="${mod_authors}"
 description='''${mod_description}'''
