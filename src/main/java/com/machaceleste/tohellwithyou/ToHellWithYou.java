@@ -57,9 +57,12 @@ public class ToHellWithYou {
         ServerLevel nether = player.server.getLevel(Level.NETHER);
         if (nether == null) return;
 
-        BlockPos spawn = findSafeSpawn(nether, nether.getSharedSpawnPos());
+        BlockPos overworldPos = player.blockPosition();
+        BlockPos netherPos = new BlockPos((int)(overworldPos.getX()), overworldPos.getY(), (int)(overworldPos.getZ()));
+        BlockPos spawn = findSafeSpawn(nether, netherPos);
         player.setHealth(3.0F);
         player.teleportTo(nether, spawn.getX() + 0.5, spawn.getY(), spawn.getZ() + 0.5, player.getYRot(), player.getXRot());
+        player.setHealth(3.0F);
     }
     
     private BlockPos findSafeSpawn(ServerLevel level, BlockPos center) {
@@ -106,7 +109,8 @@ public class ToHellWithYou {
                 BlockPos floorPos = pos.below().offset(dx, 0, dz);
                 if (level.getBlockState(floorPos).getBlock() == Blocks.AIR ||
                     level.getBlockState(floorPos).getBlock() == Blocks.LAVA ||
-                    level.getBlockState(floorPos).getBlock() == Blocks.MAGMA_BLOCK) {
+                    level.getBlockState(floorPos).getBlock() == Blocks.MAGMA_BLOCK ||
+                    level.getBlockState(floorPos).getBlock() == Blocks.FIRE) {
                     return false;
                 }
             }
