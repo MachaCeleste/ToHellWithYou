@@ -59,7 +59,8 @@ public class ToHellWithYou {
         if (nether == null) return;
     
         BlockPos overworldPos = player.blockPosition();
-        BlockPos netherPos = new BlockPos((int)(overworldPos.getX()), overworldPos.getY(), (int)(overworldPos.getZ()));
+        int posY = overworldPos.getY() >= 34 ? overworldPos.getY() : 34;
+        BlockPos netherPos = new BlockPos((int)(overworldPos.getX()), posY, (int)(overworldPos.getZ()));
         BlockPos spawn = findSafeSpawn(nether, netherPos);
     
         if (spawn.equals(netherPos)) {
@@ -74,6 +75,7 @@ public class ToHellWithYou {
         int radius = 1;
         int chunkSize = 16;
         BlockPos bestSpot = center;
+        int minY = 34;
         int maxY = 120;
     
         outer:
@@ -83,7 +85,7 @@ public class ToHellWithYou {
                 int baseZ = center.getZ() + (cz * chunkSize);
                 for (int x = 0; x < chunkSize; x++) {
                     for (int z = 0; z < chunkSize; z++) {
-                        for (int y = maxY; y > level.getMinBuildHeight(); y--) {
+                        for (int y = maxY; y > minY; y--) {
                             BlockPos pos = new BlockPos(baseX + x, y, baseZ + z);
                             if (isSafeSpawn(level, pos)) {
                                 bestSpot = pos;
