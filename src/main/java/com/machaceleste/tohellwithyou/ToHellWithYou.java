@@ -32,10 +32,10 @@ public class ToHellWithYou {
 
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.player.level().isClientSide) return;
+        if (event.player.getLevel().isClientSide) return;
     
         ServerPlayer player = (ServerPlayer) event.player;
-        boolean isInNether = player.level().dimension() == Level.NETHER;
+        boolean isInNether = player.getLevel().dimension() == Level.NETHER;
     
         if (isInNether) {
             if (!player.hasEffect(ModEffects.GO_TO_HELL.get())) {
